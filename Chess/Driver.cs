@@ -59,9 +59,19 @@ namespace Chess {
 
 				
 					/* Check if team is in CHECK! */
-					if (isCheck == false && chessBoard.Check(blackTurn)) {
-						Console.Out.WriteLine("YUR TEAM IS IN CHECK - MUST MOVE KING");
+					int code = chessBoard.Check(blackTurn, true, 0, 0);
+
+					if (isCheck == false && code == 1) {
+						Console.Out.WriteLine("YUR TEAM IS IN CHECK - MUST REMOVE KING FROM DANGER");
 						isCheck = true;
+					} else if (code == 2) {
+
+// TODO						/* MUST CALL CHECK AGAIN, 
+							/*  THIS TIME WITH CHECKMATE OPTION
+								- For all kings available moves, check if those moves are in check ! */
+
+						endGame = false;
+						break;
 					}
 
 
@@ -85,15 +95,9 @@ namespace Chess {
 				   		Console.Out.WriteLine("Blank Spot");
 				   		continue;
 				   	}
+
 				   	movePiece = chessBoard.getPiece(oldX, oldY);
 
-				   	/* If in check, you must move king! */
-				    if (isCheck) {
-				   		if (!movePiece.getType().Equals("Ki")) {
-				   			Console.Out.WriteLine("MUST REMOVE KING FROM DANGER");
-				   			continue;
-				   		}
-				   	}
 				   	/* Check if valid piece to Move 
 				   		- Check if it is the right color
 				   	*/
@@ -111,15 +115,15 @@ namespace Chess {
 
 					/* Validate Piece Movement */
 
-					/* 1. Find Direction, Check if valid movement path, gather all movable Coords in that one direction
-					   2. Check if path to the (newX, newY) is clear 
-					   3. Lastly, check in Board.cs if the last spot contians an enemy or teamate
-					   4. Move piece */
+					/* 1. Check all movements direcrions for clear path to new (x,y) position
+					   2. Check in Board.cs if the last spot contians an enemy or teamate
+					   3. Move piece */
 
-					if (movePiece.validateMove(movePiece.location, newX, newY, chessBoard)) {
+					// Move Pieces on Board
+					if (movePiece.validateMove(movePiece.location, newX, newY, chessBoard, false)) {
 					
 						int errorCode = chessBoard.movePiece(oldX, oldY, newX, newY, blackTurn);
-						// Move Piece on Board
+						
 						if (errorCode == 1) {
 							Console.Out.WriteLine("New position contains teamate!! - Try Again");
 							continue;
@@ -148,6 +152,7 @@ namespace Chess {
 					movePiece.location.setY(newY);
 
 				}
+
 
 					// Next players Turn - Increment counter to next team's turn
 					turnCount++;

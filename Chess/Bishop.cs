@@ -25,20 +25,24 @@ namespace Chess {
 			return location.locationY;
 		}
 
-		public override bool validateMove(Coord oldLoc, int newX, int newY, Board board) {
+		public override bool validateMove(Coord oldLoc, int newX, int newY, Board board, bool check) {
 			/* Same x or y not an available move */
 			if (oldLoc.getX() == newX || oldLoc.getY() == newY) { 
 				return false;
 			} else { 
-				bool validMove = allvalidMoves(board, oldLoc.getX(), oldLoc.getY(), newX, newY, true);
+				List<Coord> validMove = allvalidMoves(board, oldLoc.getX(), oldLoc.getY(), newX, newY, true, check);
 
 				// Was the newX/newY avaible on any of the Pieces valid paths
-				return validMove;
+				if (validMove.Count != 0) {
+					return true;
+				}
+					return false;
 				
 			}
 		}
 
-		public override bool allvalidMoves(Board board, int startX, int startY, int newX, int newY, bool isBlack) {
+		public override List<Coord> allvalidMoves(Board board, int startX, int startY, int newX, int newY, bool isBlack, bool check) {
+			List<Coord> ret = new List<Coord>();
 
 			/* Check Diagonal Directions, as far as piece can go w/o bumping into another piece */
 			/* Down-Right */
@@ -46,15 +50,21 @@ namespace Chess {
 			int tmpY = startY+1;
 			while (tmpX < 8 && tmpY < 8) {
 				if (board.getPiece(tmpX, tmpY) == null) { 
-					if (tmpX == newX && tmpY == newY) {
-						return true;
+					if (tmpX == newX && tmpY == newY && !check) {
+						ret.Add(new Coord(tmpX, tmpY));
+						break;
+					}
+					if (check) {
+						// add space don't break
+						ret.Add(new Coord(tmpX, tmpY));
 					}
 						tmpX++;
 						tmpY++;
 				} else { // piece there
 					if (tmpX == newX && tmpY == newY) {
-						return true;
-					} else { // not king, don't add
+						ret.Add(new Coord(tmpX, tmpY));
+						break;
+					} else { 
 						break;
 					}
 				}
@@ -65,14 +75,20 @@ namespace Chess {
 			tmpY = startY-1;
 			while (tmpX < 8 && tmpY >= 0) {
 				if (board.getPiece(tmpX, tmpY) == null) { 
-					if (tmpX == newX && tmpY == newY) {
-						return true;
+					if (tmpX == newX && tmpY == newY && !check) {
+						ret.Add(new Coord(tmpX, tmpY));
+						break;
+					}
+					if (check) {
+						// add space don't break
+						ret.Add(new Coord(tmpX, tmpY));
 					}
 						tmpX++;
 						tmpY--;
 				} else { // piece there
 					if (tmpX == newX && tmpY == newY) {
-						return true;
+						ret.Add(new Coord(tmpX, tmpY));
+						break;
 					} else { // not king, don't add
 						break;
 					}
@@ -84,14 +100,20 @@ namespace Chess {
 			tmpY = startY+1;
 			while (tmpX >= 0 && tmpY < 8) {
 				if (board.getPiece(tmpX, tmpY) == null) {
-					if (tmpX == newX && tmpY == newY) {
-						return true;
+					if (tmpX == newX && tmpY == newY && !check) {
+						ret.Add(new Coord(tmpX, tmpY));
+						break;
+					}
+					if (check) {
+						// add space don't break
+						ret.Add(new Coord(tmpX, tmpY));
 					}
 						tmpX--;
 						tmpY++;
 				} else { // piece there
 					if (tmpX == newX && tmpY == newY) {
-						return true;
+						ret.Add(new Coord(tmpX, tmpY));
+						break;
 					} else { // not king, don't add
 						break;
 					}
@@ -102,21 +124,27 @@ namespace Chess {
 			tmpY = startY-1;
 			while (tmpX >= 0 && tmpY >= 0) {
 				if (board.getPiece(tmpX, tmpY) == null) { 
-					if (tmpX == newX && tmpY == newY) {
-						return true;
+					if (tmpX == newX && tmpY == newY && !check) {
+						ret.Add(new Coord(tmpX, tmpY));
+						break;
+					}
+					if (check) {
+						// add space don't break
+						ret.Add(new Coord(tmpX, tmpY));
 					}
 						tmpX--;
 						tmpY--;
 				} else { // piece there
 					if (tmpX == newX && tmpY == newY) {
-						return true;
+						ret.Add(new Coord(tmpX, tmpY));
+						break;
 					} else { // not king, don't add
 						break;
 					}
 				}
 			}
 				
-			return false;
+			return ret;
 		}
 
 	}

@@ -19,8 +19,8 @@ namespace Chess {
 
 		private void setKingLocation(bool isBlack, int x, int y) {
 			Console.Out.WriteLine(x);
-			 Console.Out.WriteLine(y); 
-			 Console.Out.WriteLine(isBlack);
+			Console.Out.WriteLine(y);
+			Console.Out.WriteLine(isBlack);
 			if (isBlack) {
 				BlackKingLocX = x;
 				BlackKingLocY = y;
@@ -44,9 +44,20 @@ namespace Chess {
 		}
 
 
-		public bool Check(bool blackTurn) {
-				Console.Out.WriteLine("Checking CHECK...");
-				bool tmp = false;
+		public int Check(bool blackTurn, bool checkMate, int NewKingLocX, int NewKingLocY) {
+
+			/* CHECK FOR CHECKMATE, if nessicary */
+			if (checkMate) {
+					Console.Out.WriteLine("Checking CHECKMATE...");
+				bool mate = checkMateCheck(blackTurn);
+				if (mate) {
+					return 2; // We in checkmate
+				}
+			}
+
+			Console.Out.WriteLine("Checking CHECK...");
+			List<Chess.chessPiece.Coord> tmp;
+			List<Chess.chessPiece.Coord> allMoves = new List<Chess.chessPiece.Coord>();
 
 			/* - Check all spots on board for a black/white piece 
 			   - Get all Valid moves */
@@ -55,31 +66,112 @@ namespace Chess {
 					if (chessBoard[x, y] != null) {
 						if (blackTurn) { // Only check White Pieces Moves
 							if (!(chessBoard[x, y].BlackorWhite())) {
-								// pass in black king location
-								tmp = chessBoard[x, y].allvalidMoves(getBoard(), x, y, BlackKingLocX, BlackKingLocY, blackTurn);
 
-								if (tmp) {
-									return true;
+								// pass in black king location or new Black Location
+								if (checkMate) {
+									tmp = chessBoard[x, y].allvalidMoves(getBoard(), x, y, BlackKingLocX, BlackKingLocY, blackTurn, true);
+								} else {
+									tmp = chessBoard[x, y].allvalidMoves(getBoard(), x, y, NewKingLocX, NewKingLocY, blackTurn, true);
+								}
+
+								foreach (Chess.chessPiece.Coord c in tmp) {
+									allMoves.Add(new Chess.chessPiece.Coord(c.getX(), c.getY()));
 								}
 							}
 						} else { // only check Black Pieces Moves
 							if (chessBoard[x, y].BlackorWhite()) {
-								// pass in white king location
-								tmp = chessBoard[x, y].allvalidMoves(getBoard(), x, y, WhiteKingLocX, WhiteKingLocY, blackTurn);
 
-								if (tmp) {
-									return true;
+								// pass in white king location
+								if (checkMate) {
+									tmp = chessBoard[x, y].allvalidMoves(getBoard(), x, y, WhiteKingLocX, WhiteKingLocY, blackTurn, true);
+								} else {
+									tmp = chessBoard[x, y].allvalidMoves(getBoard(), x, y, NewKingLocX, NewKingLocY, blackTurn, true);
 								}
+
+								foreach (Chess.chessPiece.Coord c in tmp) {
+									allMoves.Add(new Chess.chessPiece.Coord(c.getX(), c.getY()));
+								}
+
 							}
 						}
 					}
 				}
 			} // END OUTER FOR LOOP
+
+
+			/* CHECK FOR CHECK */
+			if (blackTurn) {
+			/* Black turn - check Black king */
+				foreach (Chess.chessPiece.Coord c in allMoves) {
+					if (checkMate) {
+						if (c.getX() == BlackKingLocX && c.getY() == BlackKingLocY) { 
+							// If the kings location exists in all possible moves by white pieces
+							return 1;
+						}
+					} else {
+						if (c.getX() == NewKingLocX && c.getY() == NewKingLocY) { 
+							// If the kings location exists in all possible moves by white pieces
+							return 1;
+						}
+					}
+					
+				}
+			} else {
+			/* White turn - check White king */
+				foreach (Chess.chessPiece.Coord c in allMoves) {
+					if (checkMate) {
+						if (c.getX() == WhiteKingLocX && c.getY() == WhiteKingLocY) { 
+							// If the kings location exists in all possible moves by white pieces
+							return 1;
+						}
+					} else {
+						if (c.getX() == NewKingLocX && c.getY() == NewKingLocY) { 
+							// If the kings location exists in all possible moves by white pieces
+							return 1;
+						}
+					}
+				}
+
+			}
+
+			return 0;
+		}
+
+
+
+		
+		private bool checkMateCheck(bool blackTurn) {
+			List<Chess.chessPiece.Coord> kingOptions;
+
+			if (blackTurn) {
+				kingOptions = chessBoard[BlackKingLocX, BlackKingLocY].allvalidMoves(getBoard(), BlackKingLocX, BlackKingLocY, 0, 0, blackTurn, true);
+			} else {
+				kingOptions = chessBoard[WhiteKingLocX, WhiteKingLocY].allvalidMoves(getBoard(), WhiteKingLocX, WhiteKingLocY, 0, 0, blackTurn, true);
+			}
+
+			int movesStillInCheck = 0;
+
+
+
+			foreach (Chess.chessPiece.Coord c in kingOptions) {
+				if (Check(blackTurn, false, c.getX(), c.getY()) == 1) {
+					movesStillInCheck++;
+				}
+			}
+
+			/* All of kings moves are still in check...CHECKMATE!!*/
+			if (kingOptions.Count == movesStillInCheck) {
+				return true;
+			}
+
+
 			return false;
 		}
 
+
 		public int movePiece(int oldX, int oldY, int newX, int newY, bool blackTurn) {
 			bool isKing = false;
+			int code;
 
 			// Last check, if the new spot contains an enemey or friendly player
 			//		if same team - can not eliminate - invalid move
@@ -103,7 +195,13 @@ namespace Chess {
 			chessBoard[newX, newY] = chessBoard[oldX, oldY];
 			chessBoard[oldX, oldY] = null;
 
-			if (Check(blackTurn)) {  
+			if (blackTurn) {
+				code = Check(blackTurn, false, BlackKingLocX, BlackKingLocY);
+			} else {
+				code = Check(blackTurn, false, WhiteKingLocX, WhiteKingLocY);
+			}
+
+			if (code == 1) {  
 				/* STILL IN CHECK!! */
 				// REVERT CHANGES, RETURN FALSE
 				 chessBoard[newX, newY] = backUpNew;
@@ -140,7 +238,7 @@ namespace Chess {
 			chessBoard[BishW1.getX(), BishW1.getY()] = BishW1;
 			chessPiece BishW2 = new Bishop(false, 7, 5);
 			chessBoard[BishW2.getX(), BishW2.getY()] = BishW2;
-			// 	// Blacks
+				// Blacks
 			chessPiece BishB1 = new Bishop(true, 0, 2);
 			chessBoard[BishB1.getX(), BishB1.getY()] = BishB1;
 			chessPiece BishB2 = new Bishop(true, 0, 5);

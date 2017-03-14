@@ -49,11 +49,11 @@ namespace Chess {
 		public abstract int getX();
 		public abstract int getY();
 
-		public abstract bool validateMove(Coord oldLoc, int newX, int newY, Board board);
+		public abstract bool validateMove(Coord oldLoc, int newX, int newY, Board board, bool check);
 
 		/* Tracks if the new coordinates exist in all of the valid moves of a particular piece */
 		// Pawn piece uses this function only for checking CHECK
-		public abstract bool allvalidMoves(Board board, int startX, int startY, int newX, int newY, bool isBlack);
+		public abstract List<Coord> allvalidMoves(Board board, int startX, int startY, int newX, int newY, bool isBlack, bool check);
 
 	} 
 }

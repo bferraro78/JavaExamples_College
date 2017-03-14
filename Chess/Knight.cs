@@ -25,16 +25,23 @@ namespace Chess {
 			return location.locationY;
 		}
 
-		public override bool validateMove(Coord oldLoc, int newX, int newY, Board board) {
+		public override bool validateMove(Coord oldLoc, int newX, int newY, Board board, bool check) {
 			// In this case, last boolean parameter does not matter
-			bool validMove = allvalidMoves(board, oldLoc.getX(), oldLoc.getY(), newX, newY, true);
+			List<Coord> validMove = allvalidMoves(board, oldLoc.getX(), oldLoc.getY(), newX, newY, true, check);
 
-			// Was the newX/newY avaible on any of the Pieces valid paths
-			return validMove;
+			/* Check new coords agaisnt List of Valid Moves */
+			foreach (Coord c in validMove) {
+				if (c.getX() == newX && c.getY() == newY) {
+					// New move exsits within list of old moves
+					return true;
+				}
+			}
+
+			return false;
 
 		}
 
-		public override bool allvalidMoves(Board board, int startX, int startY, int newX, int newY, bool isBlack) {
+		public override List<Coord> allvalidMoves(Board board, int startX, int startY, int newX, int newY, bool isBlack, bool check) {
 			List<Coord> ret = new List<Coord>();
 
 			/* Up-Left */
@@ -90,16 +97,7 @@ namespace Chess {
 				ret.Add(new Coord(x+1, y-2));
 			}
 
-
-			/* Check new coords agaisnt List of Valid Moves */
-			foreach (Coord c in ret) {
-				if (c.getX() == newX && c.getY() == newY) {
-					// New move exsits within list of old moves
-					return true;
-				}
-			}
-
-			return false; // No valid move
+			return ret; // No valid move
 		}
 
 	}

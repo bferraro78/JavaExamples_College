@@ -25,8 +25,8 @@ namespace Chess {
 			return location.locationY;
 		}
 
-		public override bool validateMove(Coord oldLoc, int newX, int newY, Board board) {
-			List<Coord> validList = validMoves(board, oldLoc.getX(), oldLoc.getY(), newX, newY);
+		public override bool validateMove(Coord oldLoc, int newX, int newY, Board board, bool check) {
+			List<Coord> validList = validMoves(board, oldLoc.getX(), oldLoc.getY(), newX, newY, check);
 
 			/* Check new coords agaisnt List of Valid Moves, while checking if path is clear
 			   on the way to the new Coords */
@@ -40,7 +40,7 @@ namespace Chess {
 			return false;
 		}
 
-		private List<Coord> validMoves(Board board, int startX, int startY, int newX, int newY) { 
+		private List<Coord> validMoves(Board board, int startX, int startY, int newX, int newY, bool check) { 
 			List<Coord> ret = new List<Coord>();
 			
 			/* Check 3 movements - if in-bounds and the spot is empty 
@@ -97,7 +97,7 @@ namespace Chess {
 		}
 
 		/* FUNC FOR CHECK checking PUROSES */
-		public override bool allvalidMoves(Board board, int startX, int startY, int newX, int newY, bool isBlack) { 
+		public override List<Coord> allvalidMoves(Board board, int startX, int startY, int newX, int newY, bool isBlack, bool check) { 
 			List<Coord> ret = new List<Coord>();
 			
 			/* Check Directions */
@@ -150,14 +150,7 @@ namespace Chess {
 				}
 			}
 
-			/* Check new coords agaisnt List of Valid Moves */
-			foreach (Coord c in ret) {
-				if (c.getX() == newX && c.getY() == newY) {
-					// New move exsits within list of old moves
-					return true;
-				}
-			}
-			return false; // No move was valid
+			return ret; 
 		}
 
 
