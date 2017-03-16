@@ -175,7 +175,7 @@ def max_scholarshipALG(scholarshipArr):
 ### REST API
 def max_scholarship(scholarshipMatrix):
 	resp = requests.post('/max_scholarship/', json=scholarshipMatrix) # Content-Type is auto set to 'application/json'
-	return max_scholarshipALG(scholarshipMatrix)
+	return max_scholarshipALG(scholarshipMatrix['data'])
 
 
 
@@ -185,8 +185,8 @@ scholarships = {"data": [[1,2,3,4,5], [1,1,2,3,5], [3,4,5,5,5], [3,4,5,9,5], [1,
 n = len(scholarships['data'])
 s = 3 # number of scholarships
 
-max_scholarshipALG(scholarships['data'])
-# answer = max_scholarship(scholarships)
+
+answer = max_scholarship(scholarships)
 
 
 
