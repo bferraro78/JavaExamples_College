@@ -151,8 +151,6 @@ namespace Chess {
 
 			int movesStillInCheck = 0;
 
-
-
 			foreach (Chess.chessPiece.Coord c in kingOptions) {
 				if (Check(blackTurn, false, c.getX(), c.getY()) == 1) {
 					movesStillInCheck++;

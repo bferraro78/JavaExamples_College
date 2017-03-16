@@ -66,10 +66,6 @@ namespace Chess {
 						isCheck = true;
 					} else if (code == 2) {
 
-// TODO						/* MUST CALL CHECK AGAIN, 
-							/*  THIS TIME WITH CHECKMATE OPTION
-								- For all kings available moves, check if those moves are in check ! */
-
 						endGame = false;
 						break;
 					}
@@ -158,8 +154,7 @@ namespace Chess {
 					turnCount++;
 					chessBoard.displayBoard();
 
-					/* DEBUG */
-					// 	endGame = false;
+
 			}
 
 				Console.Out.WriteLine("See ya!!");

@@ -52,7 +52,8 @@ namespace Chess {
 		public abstract bool validateMove(Coord oldLoc, int newX, int newY, Board board, bool check);
 
 		/* Tracks if the new coordinates exist in all of the valid moves of a particular piece */
-		// Pawn piece uses this function only for checking CHECK
+		// bool check - used for determining if the new X/Y is allowed to be a blank space
+		// bool isBlack - determines which team (and direction) a Pawn can move / check for check
 		public abstract List<Coord> allvalidMoves(Board board, int startX, int startY, int newX, int newY, bool isBlack, bool check);
 
 	} 

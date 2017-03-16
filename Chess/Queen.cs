@@ -41,7 +41,6 @@ namespace Chess {
 		/* FOR CHECKMATE PURPOSES */
 		public override List<Coord> allvalidMoves(Board board, int startX, int startY, int newX, int newY, bool isBlack, bool check) {
 			List<Coord> ret = new List<Coord>();
-			/* Gather Directional Movements */
 
 			/* Gather Directional Movements */
 			/* Left */
@@ -52,7 +51,7 @@ namespace Chess {
 						break;
 					}
 					if (check) {
-						// add space don't break
+						// add space, don't break
 						ret.Add(new Coord(startX, i));
 					}
 				} else { // piece there
