@@ -20,26 +20,26 @@ def max_scholarshipALG(scholarshipArr):
 	maxScholarship = 0 
 	retSequence = []
 
-	# Diagonal
-	## All diagonals of x = 0
+# Diagonal
+## All diagonals of x = 0
 	tmp = []
 	x = 0
-	while x <= n: # for every number in each row, check the diagonal
+	while x <= n-s: # for every number in each row, check the diagonal
 		itr = 0
 		productTMP = 1
-		
+
 		# Do first calculation
 		countX = 0
 		countY = x
 		while countX < s:
-			if countX+x < n: # accounts for diagonal rows that do not have s scholarships
-				productTMP *= scholarshipArr[countX][countY]
-				tmp.insert(0,scholarshipArr[countX][countY]) # record inital scholarship numbers
+			productTMP *= scholarshipArr[countX][countY]
+			tmp.insert(0,scholarshipArr[countX][countY]) # record inital scholarship numbers
 
 			countX += 1
 			countY += 1
 		
 		itr += 1
+
 		# Replace largest scholarship
 		if productTMP > maxScholarship:
 			maxScholarship = productTMP
@@ -63,10 +63,10 @@ def max_scholarshipALG(scholarshipArr):
 		tmp = []
 		x += 1
 
-	## All diagonals the y = 0
+## All diagonals the y = 0
 	tmp = []
 	y = 0
-	while y <= n:
+	while y <= n-s:
 		itr = 0
 		productTMP = 1
 
@@ -74,9 +74,8 @@ def max_scholarshipALG(scholarshipArr):
 		countX = y
 		countY = 0
 		while countY < s:
-			if countY+y < n:
-				tmp.insert(0, scholarshipArr[countX][countY]) # record inital scholarship numbers
-				productTMP *= scholarshipArr[countX][countY]
+			tmp.insert(0, scholarshipArr[countX][countY]) # record inital scholarship numbers
+			productTMP *= scholarshipArr[countX][countY]
 			countX += 1
 			countY += 1
 
@@ -106,7 +105,7 @@ def max_scholarshipALG(scholarshipArr):
 		y += 1
 
 
-	## ROWS
+## ROWS
 	tmp = []
 	for x in range(0, n): # for every arr
 		itr = 0
@@ -136,7 +135,7 @@ def max_scholarshipALG(scholarshipArr):
 		tmp = []
 
 
-	## COLUMNS
+## COLUMNS
 	tmp = []
 	for y in range(0, n): # for every arr
 		itr = 0
@@ -181,12 +180,11 @@ def max_scholarship(scholarshipMatrix):
 	return max_scholarshipALG(scholarshipMatrix['data'])
 
 
-
 scholarships = {"data": [[1,2,3,4,5], 
 						 [1,1,2,3,5], 
-						 [3,4,2,5,5], 
-						 [3,4,5,900,5], 
-						 [1,1,5,5,250]]}
+						 [3,4,5,5,5], 
+						 [3,4,5,9,5], 
+						 [1,1,5,5,25]]}
 
 n = len(scholarships['data']) # nxn matrix
 s = 3 # number of scholarships
