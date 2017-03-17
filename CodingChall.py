@@ -24,7 +24,7 @@ def max_scholarshipALG(scholarshipArr):
 	## All diagonals of x = 0
 	tmp = []
 	x = 0
-	while x <= n-s: # for every number in each row, check the diagonal
+	while x <= n: # for every number in each row, check the diagonal
 		itr = 0
 		productTMP = 1
 		
@@ -32,8 +32,10 @@ def max_scholarshipALG(scholarshipArr):
 		countX = 0
 		countY = x
 		while countX < s:
-			productTMP *= scholarshipArr[countX][countY]
-			tmp.insert(0,scholarshipArr[countX][countY]) # record inital scholarship numbers
+			if countX+x < n: # accounts for diagonal rows that do not have s scholarships
+				productTMP *= scholarshipArr[countX][countY]
+				tmp.insert(0,scholarshipArr[countX][countY]) # record inital scholarship numbers
+
 			countX += 1
 			countY += 1
 		
@@ -64,7 +66,7 @@ def max_scholarshipALG(scholarshipArr):
 	## All diagonals the y = 0
 	tmp = []
 	y = 0
-	while y <= n-s:
+	while y <= n:
 		itr = 0
 		productTMP = 1
 
@@ -72,8 +74,9 @@ def max_scholarshipALG(scholarshipArr):
 		countX = y
 		countY = 0
 		while countY < s:
-			tmp.insert(0, scholarshipArr[countX][countY]) # record inital scholarship numbers
-			productTMP *= scholarshipArr[countX][countY]
+			if countY+y < n:
+				tmp.insert(0, scholarshipArr[countX][countY]) # record inital scholarship numbers
+				productTMP *= scholarshipArr[countX][countY]
 			countX += 1
 			countY += 1
 
@@ -179,14 +182,21 @@ def max_scholarship(scholarshipMatrix):
 
 
 
+scholarships = {"data": [[1,2,3,4,5], 
+						 [1,1,2,3,5], 
+						 [3,4,2,5,5], 
+						 [3,4,5,900,5], 
+						 [1,1,5,5,250]]}
 
-
-scholarships = {"data": [[1,2,3,4,5], [1,1,2,3,5], [3,4,5,5,5], [3,4,5,9,5], [1,1,5,5,25]]}
-n = len(scholarships['data'])
+n = len(scholarships['data']) # nxn matrix
 s = 3 # number of scholarships
 
+# if n < 100:
+	# exit()
 
-answer = max_scholarship(scholarships)
+
+# answer = max_scholarship(scholarships)
+max_scholarshipALG(scholarships['data'])
 
 
 
