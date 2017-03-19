@@ -24,11 +24,11 @@ def max_scholarshipALG(scholarshipArr):
 ## All diagonals of x = 0
 	tmp = []
 	x = 0
-	while x <= n-s: # for every number in each row, check the diagonal
+	while x <= n-s:
 		itr = 0
 		productTMP = 1
 
-		# Do first calculation
+		# First section of scholarships calculation
 		countX = 0
 		countY = x
 		while countX < s:
@@ -70,7 +70,7 @@ def max_scholarshipALG(scholarshipArr):
 		itr = 0
 		productTMP = 1
 
-		# Do first calculation
+		# First section of scholarships calculation
 		countX = y
 		countY = 0
 		while countY < s:
@@ -111,7 +111,7 @@ def max_scholarshipALG(scholarshipArr):
 		itr = 0
 		productTMP = 1
 		while itr <= n-s:
-			if itr == 0: # Do first calculation
+			if itr == 0: # First section of scholarships calculation
 				count = 0
 				while count < s:
 					tmp.insert(0,scholarshipArr[x][count]) # record inital scholarship numbers
@@ -141,7 +141,7 @@ def max_scholarshipALG(scholarshipArr):
 		itr = 0
 		productTMP = 1
 		while itr <= n-s:
-			if itr == 0: # Do first calculation
+			if itr == 0: # First section of scholarships calculation
 				count = 0
 				while count < s:
 					tmp.insert(0, scholarshipArr[count][y]) # record inital scholarship numbers
@@ -169,32 +169,24 @@ def max_scholarshipALG(scholarshipArr):
 	data['sequence'] = retSequence
 	json_data = json.dumps(data)
 	print json_data
+	return json_data
 
 #### END ALGORITHM
 
 
 
 ### REST API
-def max_scholarship(scholarshipMatrix):
-	resp = requests.post('/max_scholarship/', json=scholarshipMatrix) # Content-Type is auto set to 'application/json'
-	return max_scholarshipALG(scholarshipMatrix['data'])
+resp = requests.get('/max_scholarship/') # read in NxN matrix
+matrix = json.load(resp) 
 
+n = len(matrix['data']) # Gather n
+s = 11 # number of scholarships
 
-scholarships = {"data": [[1,2,3,4,5], 
-						 [1,1,2,3,5], 
-						 [3,4,5,5,5], 
-						 [3,4,5,9,5], 
-						 [1,1,5,5,25]]}
+# NxN must be greater or equal to 100
+if n < 100:
+	sys.exit()
 
-n = len(scholarships['data']) # nxn matrix
-s = 3 # number of scholarships
-
-# if n < 100:
-	# exit()
-
-
-# answer = max_scholarship(scholarships)
-max_scholarshipALG(scholarships['data'])
-
+scholarshipMatrix = max_scholarshipALG(matrix['data']) # Run algorithm on scholarship matrix
+requests.post('/max_scholarship/', json=scholarshipMatrix) # Content-Type is auto set to 'application/json
 
 
