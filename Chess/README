@@ -1,0 +1,12 @@
+Compile:
+- install mono services
+	mcs Driver.cs Board.cs Bishop.cs Knight.cs Queen.cs Rook.cs King.cs Pawn.cs chessPiece.cs 
+
+TO RUN:
+
+MAC:
+- install mono
+	mono Driver.exe
+
+PC: 
+- execute Driver.exe
