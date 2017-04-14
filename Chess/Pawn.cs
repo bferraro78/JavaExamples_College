@@ -96,7 +96,7 @@ namespace Chess {
 			return ret;
 		}
 
-		/* FUNC FOR CHECK checking PUROSES */
+		/* FUNC FOR CHECK checking PURPOSES */
 		public override List<Coord> allvalidMoves(Board board, int startX, int startY, int newX, int newY, bool isBlack, bool check) { 
 			List<Coord> ret = new List<Coord>();
 			
