@@ -1,4 +1,18 @@
-state1
-state2
-state3
-beanooooo
+M beanooo
+F state1
+F state2
+F state3
+F state4
+E
+M dagaaaaaaa
+F state5
+F state6
+F state7
+F state8
+E
+M zack
+F var333
+F var00  d
+F var1100   
+F var100
+E
