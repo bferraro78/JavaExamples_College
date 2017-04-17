@@ -13,18 +13,6 @@ namespace Chess {
 			return type;
 		}
 
-		public override bool BlackorWhite() {
-			return isBlack;
-		}
-
-		public override int getX() {
-			return location.locationX;
-		}
-
-		public override int getY() {
-			return location.locationY;
-		}
-
 		public override bool validateMove(Coord oldLoc, int newX, int newY, Board board, bool check) {
 			List<Coord> validList = validMoves(board, oldLoc.getX(), oldLoc.getY(), newX, newY, check);
 

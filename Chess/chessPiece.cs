@@ -42,13 +42,20 @@ namespace Chess {
 			location = new Coord(locX, locY);
 		}
 
-		public abstract bool BlackorWhite();
+		public bool BlackorWhite() {
+			return isBlack;
+		}
 		
 		public abstract string getType();
 
-		public abstract int getX();
-		public abstract int getY();
+		public int getX() {
+			return location.getX();
+		}
+		public int getY() {
+			return location.getY();
+		}
 
+		
 		public abstract bool validateMove(Coord oldLoc, int newX, int newY, Board board, bool check);
 
 		/* Tracks if the new coordinates exist in all of the valid moves of a particular piece */

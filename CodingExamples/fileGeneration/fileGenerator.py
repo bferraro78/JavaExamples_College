@@ -36,5 +36,3 @@ for line in stateNames:
 	elif line[0] == 'E': # end struct
 		header.write(" } " + nameOfStruct + ";\n\n")
 		body.write("};\n\n")
-
-
