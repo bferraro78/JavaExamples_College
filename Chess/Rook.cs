@@ -16,7 +16,7 @@ namespace Chess {
 		public override bool validateMove(Coord oldLoc, int newX, int newY, Board board, bool check) {
 			List<Coord> validMove = allvalidMoves(board, oldLoc.getX(), oldLoc.getY(), newX, newY, true, check);
 
-			// Was the newX/newY avaible on any of the Pieces valid paths
+			// Was the newX/newY avaible on any of the Piece's valid paths
 			if (validMove.Count != 0) {
 				return true;
 			}
