@@ -14,6 +14,7 @@ public class BankMain {
     private static Pattern argIsValidFile = Pattern.compile("^([a-z]|[0-9]|_|-|\\.){1,255}$");
     private static Pattern argIsValidNumber = Pattern.compile("^(0|[1-9][0-9]*)$");
     private static Pattern argStartsWithFlag = Pattern.compile("^(-a|-ag|-ga|-g|-s|-i|-p|-c|-n|-d|-w)");
+    
     private static boolean sanitizeArg(String arg, String lastFlag, Map<String, String> argMap) {
         boolean status = false;
         if(lastFlag == null) {
